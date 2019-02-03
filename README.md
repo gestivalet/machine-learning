@@ -1,13 +1,13 @@
 # Machine-Learning-Portfolio
 
-This portfolio is being developed by Gabriel Estivalet to use Machine Learning techniques on regression and classification problems. The files that start with `Udacity` are projects developed following course content from the School.
+This portfolio is being developed by Gabriel Estivalet to use Machine Learning techniques on regression and classification problems. The files that start with `Udacity` are projects developed following course content from the [School](https://eu.udacity.com)
 
 
 ### The sources used as guidelines for these projects are:
 
 - General Assembly: Data Science course materials;
 
-- Udacity Machine Learning Nanodegree materials;
+- Udacity Nanodegree materials;
 
 - Muller & Guido: Introduction to Machine Learning with Python, O'Reilly, 2016;
 
