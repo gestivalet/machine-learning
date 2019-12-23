@@ -1,10 +1,15 @@
 # Udacity DS Nanodegree Capstone Project
 
 ## Description
-According to the task description provided by Starbucks and Udacity, "_This data set contains simulated data that mimics customer behavior on the Starbucks rewards mobile app. Once every few days, Starbucks sends out an offer to users of the mobile app. An offer can be merely an advertisement for a drink or an actual offer such as a discount or BOGO (buy one get one free). Some users might not receive any offer during certain weeks.  
+According to the task description provided by Starbucks and Udacity,
+> "_This data set contains simulated data that mimics customer behavior on the Starbucks rewards mobile app. Once every few days, Starbucks sends out an offer to users of the mobile app. An offer can be merely an advertisement for a drink or an actual offer such as a discount or BOGO (buy one get one free). Some users might not receive any offer during certain weeks.  
 Not all users receive the same offer, and that is the challenge to solve with this data set.  
 Your task is to combine transaction, demographic and offer data to determine which demographic groups respond best to which offer type. This data set is a simplified version of the real Starbucks app because the underlying simulator only has one product whereas Starbucks actually sells dozens of products.  
 Every offer has a validity period before the offer expires. As an example, a BOGO offer might be valid for only 5 days. You'll see in the data set that informational offers have a validity period even though these ads are merely providing information about a product; for example, if an informational offer has 7 days of validity, you can assume the customer is feeling the influence of the offer for 7 days after receiving the advertisement._" **Source: project description**.
+
+Therefore, this represents a typical problem any retailer faces, where it has to keep its customers engaged by sending them offers and promotions.
+
+For more information on the dataset provided, check file `Starbucks_Capstone_notebook_part1`, which contains the data exploration steps.
 
 
 ## Goal
@@ -22,7 +27,9 @@ If these events are seen in this order AND the transaction takes place during th
 
 For all other scenarios, the offers will be considered unsuccessful and the target will be `0`.
 
-Given these parameters, this is a supervised classification problem.
+Given these parameters, this is a supervised classification problem that will be approached by creating a benchmark model based on sklearn's `DummyClassifier` that will always predict the most common value. this way, if there are more negative cases in the data, the model will always predict `0`. Next, some other modeling techniques will be tested first without parameter tunning and the best model will be seleced for optimization.
+
+During optimization, `RandomizedSearchCV` will be used for hyper-parameter tunning so that the models can present better results. After that, the metrics proposed will be evaluated and conlusions about the feasibility of the task will be made, as well as considerations about potential improvements.
 
 
 ## Methodology
@@ -39,6 +46,23 @@ Given these parameters, this is a supervised classification problem and, as such
 - [`f1 score`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html): similarly, the F1 Score also evaluates the performance of the classifier, but as it takes into account both precision (_the ability of the classifier not to label as positive a sample that is negative_) and recall (_the ability of the classifier to find all the positive samples_), it normally has more evaluation power in unbalanced datasets. In fact, this is the harmonic mean of precision and recall and is defined as: `F1 = 2 * (precision * recall) / (precision + recall)`  Source: Scikit-Learn Documentation.
 
 For both metrics, the higher, the better. In addition to these, other supporting evaluation metrics provided by the [classification report](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html), [confusion matrix](https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html) and [ROC Curve](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html) will be used.
+
+
+## Models used
+In our approach, different models will be tested on the data with default parameters. The best performing one will be optimized so we can improve our metrics.
+
+Important to note that some features were organized with a tree-based model in mind. Such features are `year`, `month`, `week` and `day`. Each one has the period in which the customer has become a member. Together, they used to form the variable `became_member_on`, which was a time stamp. Note that for linear models, a more common approach would be to create dummy variables for at least `year` and `month`, since we wouldn't greatly increase the feature space. As `week` and `day` have many possible values, creating dummies out of them would increase the dimensions of the table without necessarily providing more information. Tree-based models make axis parallel partitions in the data and, thus, dummies are not necessary.
+
+Nonetheless, some linear models will be tested on the data to provide us a reference of how they could perform.
+
+The models that will be tested are:
+- [SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html)
+- [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
+- [Dummy Classifier](https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html)
+- [Random Forest Classifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)
+- [XGBoost Classifier](https://xgboost.readthedocs.io/en/latest/)
+
+`Dummy Classifier` will be used as a benchmark, as it will always yield the `most frequent value` in the data (this is the selected strategy)
 
 
 ## Conclusions
