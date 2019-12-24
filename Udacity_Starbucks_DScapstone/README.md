@@ -67,26 +67,27 @@ The models that will be tested are:
 
 ## Conclusions
 After an initial attempt of **predicting if an offer will be successful**, this appears to be a feasible task with the data available. Given demographic and offer characteristics, as well as behavioral data, the models seem to offer reasonable performances. This is specially true for the one trained with the `BOGO` and `discount` offer data. In this case, the model performs fairly good in predicting who would likely act upon one of this offers, by being actively engaged with the company. Once again, in order for these offers to be considered successful, the following criteria must be met:
-- **BOGO & discount offers:** for these offers to be considered successful, these events need to happen in sequence:
 - > **offer received >> offer viewed >> transaction >> offer completed**
 
 Only if these events take place in sequence for the same offer, we will consider it successful (positive case). In this scenario, the best classifier was optimized and it yielded an ROC score of over 0.91, which is fairly high and could be used in a real life situation for such a task. Important to note here that sending promotional offers to customers does not require the same level of performance that a ML-model trained for a medical application for example, as a certain level of mistakes (customer don't act upon the offer) is unlikely to hurt the company by much.
 
-Other metrics for this case are:
+Metrics for this case are:
 - accuracy score: 0.8296
 - f1_score: 0.7853
+- roc_auc_score(test): 0.913
+
+Moreover, the best parameters found show that the trees are quite shallow (`max_dept=3`) and not many estimators were necessary to produce the best results (`n_estimators=100`). In addition, `learning_rate`(0.1) also has a lower value, reinforcing the idea the the model can easily separate both positive and negative cases.
 
 
-On the dataset, the one containing `informational` offers, the classifiers also show a good performance, however slight lower than the previous case.
-The results were:
+On the dataset, the one containing `informational` offers, the criteria for a successful offer is:
+- > **offer received >> offer viewed >> transaction**
+
+The classifiers for this dataset also show a good performance, however slight lower than the previous case. The results were:
 - accuracy score: 0.7930
 - f1_score: 0.7438
+- roc_auc_score(test): 0.812
 
-
-For this case the overall 
-
-- **informational offer:** in this case we will need to observe the following:
-- > **offer received >> offer viewed >> transaction**
+As one can observe, a similar conclusion as the one for the previous dataset is also valid, which states that a certain level of error might not be such a problem in an marketing department of a retailing company like Starbucks. In general, this classifier also performs well and its main optimized parameters `max_dept`(3), `n_estimators`(100) and `learning_rate`(0.1) present the same low values (given parameters' search ranges). In addition, these are the same ones found for the best classifier in the `BOGO` and `discount` case and it's likely that the provided seed played some part in it.
 
 
 The optimized classifiers produced results that are only slightly better, which could indicate that potential improvements in 3 main areas:
@@ -95,6 +96,8 @@ The optimized classifiers produced results that are only slightly better, which 
 - other models: each algorithm has it's own way of reaching conclusions and there is not a particular way that will solve all problems better. So, additional models can potentially show better performances.
 
 These areas could be explored for further improvements in the results, but overall the goal of **predicting if an offer will be successful given customer demographic information, as well as some of the offer's characteristics** is not only feasible, but the classifiers trained here show that the features have a great discriminatory power to support the task.
+
+The algorithm implementation is one of the most interesting parts of the data science pipeline, but in this particular project, organizing the data has proven to be the most challenging task. That is true specially given the elaborated sequence of events that would need to take place and sometimes even within a time window. I certainly learned a great many deal of things with it and I'm proud of the solution I reached.
 
 
 ## Files
